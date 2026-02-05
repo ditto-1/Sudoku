@@ -1,3 +1,4 @@
+
 .page {
   	width: 100%;
   	height: 600px;
@@ -79,14 +80,14 @@ border-right: 2px solid #df0082;
 
 .subgrid {
   display: grid;
-  grid-template-columns: repeat(3, 52.89px);
-  grid-template-rows: repeat(3, 52.89px); 
+  grid-template-columns: repeat(3, 52px);
+  grid-template-rows: repeat(3, 52px); 
   border: 2px solid #df0082;
 }
 
 .cell {
-  width: 52.89px;
-  height: 52.89px;
+  width: 52;
+  height: 52;
   text-align: center;
   font-size: 28px;
   border: 0.5px solid #ccc; 
@@ -99,7 +100,7 @@ border-right: 2px solid #df0082;
 }
 
 .cell:focus{
-	background-color: #df0082;
+	background-color: #df74b0;
 }
 
 .cell.highlight {
@@ -113,10 +114,32 @@ top: 4px;
 font-size: 32px;
 color: #000;
 font-family: 'ADLaM Display';
-left:211px;
+left:390px;
 display: inline-block;
 width: 233px;
 height: 33px;
+}
+
+.lives{
+	display: inline-flex;
+	gap: 5px;
+}
+
+.heart {
+	position: absolute;
+	width: 35px;
+	height: 30px;
+	top: 14px;
+	left: 60px;
+}
+
+#error-count{
+	position: absolute;
+	font-size: 30px;
+	top: 7px;
+	left: 100px;
+	color: black;
+
 }
 
 #container {
@@ -155,7 +178,7 @@ height: 33px;
 	text-align:center;
 	justify-content: center;
 	align-items: center;
-	display: flex;
+	display: block;
 	position: fixed;
 	z-index: 3;
 	background-color: rgb(0, 0, 0);
@@ -169,5 +192,37 @@ height: 33px;
 
 	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
 				0 5px 15px rgba(0, 0, 0, 0.1);
+}
 
+.play-again{
+	font-size: 25px;
+	background-color: #e3bfd3;
+	cursor: pointer;
+	transition: transform 0.1s ease-in-out;
+}
+
+.play-again:hover{
+	transform: scale(1.05);
+}
+
+.cell.wrong:focus{
+	background-color: red;
+	animation: shake 0.2s ease-in-out 0s 2;
+}
+
+.cell.correct:focus{
+	background-color: #df0082;
+}
+
+.cell.given{
+	cursor: default;
+	pointer-events: none; 
+    user-select: none;   
+}
+
+@keyframes shake {
+	0% { transform: translateX(0); }
+    50% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
 }
