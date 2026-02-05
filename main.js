@@ -1,3 +1,4 @@
+let isresetting = false;
 const subgrids = document.querySelectorAll(".subgrid");
 const allCells = [];
 
@@ -59,14 +60,16 @@ nums.forEach(button => {
                 const isComplete = allCells.every(cell => cell.value!=="" && !cell.classList.contains('wrong'));
                 if (isComplete){
                     stopTimer();
-                    document.querySelector('.alert').visibility="visible";
+                    document.querySelector('.alert').style.visibility="visible";
                     document.querySelector('.msg').textContent = "YOU WON!!\nTime taken: "+document.querySelector('.time').textContent;
-                    document.querySelector('.play-again').visibility = "hidden";
+                    document.querySelector('.msg').style.fontSize = "25px";
+                    document.querySelector('.play-again').style.visibility = "hidden";
                     
                 }
             } else {
                 active_cell.classList.add('wrong');
                 error--;
+                if (error <= 0) error=0;
                 error_text.textContent=error;
                 if (error_text.textContent == 0){
                     stopTimer();
@@ -81,7 +84,10 @@ nums.forEach(button => {
 
 const reset = document.querySelector('.play-again');
 reset.addEventListener('click', () => {
-    document.activeElement.blur();
+    isresetting=true;
+    if (document.activeElement){
+        document.activeElement.blur();
+    }
 
     allCells.forEach(cell => {
         cell.value = "";
@@ -103,6 +109,7 @@ allCells.forEach(cell => {
     });
 
     cell.addEventListener('blur', (e) => {
+        if (isresetting) return;
         if (cell.classList.contains('wrong')){
             setTimeout(() => cell.focus(), 0);
         }else{
@@ -155,21 +162,19 @@ function generate(difficulty=35){
     });
 
 
-    for(let i=0; i<difficulty; i++){
-        let r_index = Math.floor(Math.random()*81);
+    let removed = 0;
+    while (removed < difficulty) {
+        let r_index = Math.floor(Math.random() * 81);
         let cell = allCells[r_index];
-        if (cell.value=""){
-            i--;
-            continue;
+        if (cell.value !== "") {
+            cell.value = "";
+            removed++;
         }
-        cell.value="";
-        cell.readOnly = false;
     }
     allCells.forEach(c => {
         if (c.value != ""){
             c.readOnly = true;
             c.classList.add('given');
-
             c.tabIndex = -1;
         }
     });
@@ -232,4 +237,4 @@ function stopTimer(){
 }
 
 
-generate(40);
+generate(1);

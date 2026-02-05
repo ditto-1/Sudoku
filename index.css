@@ -61,7 +61,7 @@
 .page-2-child7 {
 position: absolute;
 top: 47px;
-left: 62px;
+left: 54px;
 background-color: #fff;
 box-sizing: border-box;
 width: 476px;
@@ -186,12 +186,18 @@ height: 33px;
 	border-radius: 25px;
 	width: 300px;
 	height: 150px;
-	left: 25%;
+	left: 12.5%;
 	top: 34.7%;
 	visibility: hidden;
 
 	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
 				0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.msg{
+	margin-top: 15px;
+	gap:10px;
+	white-space: pre-line;
 }
 
 .play-again{
