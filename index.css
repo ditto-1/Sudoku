@@ -1,4 +1,3 @@
-
 .page {
   	width: 100%;
   	height: 600px;
@@ -90,21 +89,13 @@ border-right: 2px solid #df0082;
   height: 52;
   text-align: center;
   font-size: 28px;
-  border: 0.5px solid #ccc; 
+  border: 0.5px solid #df0082; 
   outline: none;
   caret-color: transparent;
 }
 
 .cell::-webkit-inner-spin-button{
 	display: none;
-}
-
-.cell:focus{
-	background-color: #df74b0;
-}
-
-.cell.highlight {
-	background-color: #e18ad7;
 }
 
 
@@ -172,6 +163,24 @@ height: 33px;
 	transform: scale(1.05);
 }
 
+.overlay {
+	position: fixed; 
+	margin: 8px;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 600px;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.overlay.active {
+    display: flex;
+}
+
 .alert{
 	color: #df0082;
 	font-size: 45px;
@@ -221,9 +230,16 @@ height: 33px;
 }
 
 .cell.given{
-	cursor: default;
-	pointer-events: none; 
-    user-select: none;   
+	cursor: text;  
+    user-select: none; 
+}
+
+.cell:focus{
+	background-color: #df74b0 !important;
+}
+
+.cell.highlight {
+	background-color: #e6c6e2 !important;
 }
 
 @keyframes shake {

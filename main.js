@@ -22,16 +22,26 @@ subgrids.forEach((subgrid, s_index)=> {
     });
 });
 
-function applyHighlight(targetRow, targetCol){
+function applyHighlight(targetRow, targetCol, targetbox){
     allCells.forEach(cell => cell.classList.remove('highlight'));
+
+    const focusedCell = allCells.find(c => 
+        c.getAttribute('data-row') == targetRow && 
+        c.getAttribute('data-col') == targetCol
+    );
+
+    const target = focusedCell.value;
 
     allCells.forEach(cell=>{
         const cellRow = cell.getAttribute('data-row');
         const cellCol = cell.getAttribute('data-col');
-
-        if (cellRow == targetRow ^ cellCol == targetCol){
+        const cellbox = cell.getAttribute('data-box');
+        const isCrosshair = (cellRow == targetRow || cellCol == targetCol || cellbox == targetbox) ^ (cellRow == targetRow && cellCol == targetCol);
+        const isSameValue = (focusedCell.classList.contains('given') && cell.classList.contains('given') && cell.value == target && !(cellRow == targetRow && cellCol == targetCol));
+        if (isCrosshair || isSameValue){
             cell.classList.add('highlight');
         }
+        
     });
 }
 
@@ -44,6 +54,7 @@ nums.forEach(button => {
         event.preventDefault();
 
         const active_cell = document.activeElement;
+        if (active_cell && active_cell.classList.contains('given')) return;
 
         if (active_cell && active_cell.classList.contains('cell')){
             active_cell.classList.remove('wrong');
@@ -60,10 +71,13 @@ nums.forEach(button => {
                 const isComplete = allCells.every(cell => cell.value!=="" && !cell.classList.contains('wrong'));
                 if (isComplete){
                     stopTimer();
-                    document.querySelector('.alert').style.visibility="visible";
+                    const overlay = document.getElementById('overlay');
+                    overlay.classList.add('active');
+                    document.activeElement.blur();
+                    document.querySelector('.alert').style.visibility = "visible";
                     document.querySelector('.msg').textContent = "YOU WON!!\nTime taken: "+document.querySelector('.time').textContent;
                     document.querySelector('.msg').style.fontSize = "25px";
-                    document.querySelector('.play-again').style.visibility = "hidden";
+                    //document.querySelector('.play-again').style.visibility = "hidden";
                     
                 }
             } else {
@@ -74,6 +88,9 @@ nums.forEach(button => {
                 if (error_text.textContent == 0){
                     stopTimer();
                     const alert = document.querySelector('.alert');
+                    const overlay = document.getElementById('overlay');
+                    overlay.classList.add('active');
+                    document.activeElement.blur();
                     alert.style.visibility="visible";
                 }
 
@@ -95,6 +112,7 @@ reset.addEventListener('click', () => {
     });
     error = 3;
     error_text.textContent = error;
+    document.querySelector('.overlay').classList.remove('active');
     document.querySelector('.alert').style.visibility = "hidden";
     stopTimer();
     generate(40);
@@ -102,10 +120,11 @@ reset.addEventListener('click', () => {
 
 allCells.forEach(cell => {
     cell.addEventListener('focus', () => {
-        if (cell.classList.contains('given')) return;
+        //if (cell.classList.contains('given')) return;
         const r = cell.getAttribute('data-row');
         const c = cell.getAttribute('data-col');
-        applyHighlight(r, c);
+        const b = cell.getAttribute('data-box');
+        applyHighlight(r, c, b);
     });
 
     cell.addEventListener('blur', (e) => {
@@ -175,7 +194,8 @@ function generate(difficulty=35){
         if (c.value != ""){
             c.readOnly = true;
             c.classList.add('given');
-            c.tabIndex = -1;
+            c.tabIndex = 0;
+            c.style.color = "#a60061";
         }
     });
 
@@ -237,4 +257,4 @@ function stopTimer(){
 }
 
 
-generate(1);
+generate(40);
